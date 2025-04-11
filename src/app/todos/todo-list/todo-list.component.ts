@@ -1,9 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { TodosService } from '../../services/todos.service';
 import { TodoListItemComponent } from '../todo-list-item/todo-list-item.component';
-
-interface TodoItem {
-  title: string;
-}
 
 @Component({
   selector: 'app-todo-list',
@@ -13,36 +10,13 @@ interface TodoItem {
   styleUrl: './todo-list.component.css',
 })
 export class TodoListComponent {
-  todos: TodoItem[] = [
-    {
-      title: 'Angular',
-    },
-    {
-      title: 'React',
-    },
-    {
-      title: 'Vue',
-    },
-    {
-      title: 'Svelte',
-    },
-    {
-      title: 'Solid',
-    },
-    {
-      title: 'Astro',
-    },
-    {
-      title: 'Lit',
-    },
-    {
-      title: 'Backbone',
-    },
-    {
-      title: 'Ember',
-    },
-    {
-      title: 'Mithril',
-    },
-  ];
+  //Use inject for a service name token
+  todoService = inject(TodosService);
+
+  todos = this.todoService.getTodos();
+
+  addTodo(todo: string) {
+    this.todoService.addTodos(todo);
+    this.todos = this.todoService.getTodos();
+  }
 }

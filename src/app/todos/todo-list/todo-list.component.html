@@ -1,5 +1,8 @@
 <h2>This is a todo list</h2>
 
+<input type="text" #addTodoItem placeholder="Add a new todo">
+<button (click)="addTodo(addTodoItem.value)">Add Todo</button>
+
 @for (item of todos; track $index) {
 <app-todo-list-item [title]="item.title"></app-todo-list-item>
 }
