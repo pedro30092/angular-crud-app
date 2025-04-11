@@ -13,4 +13,8 @@ export class TodoListItemComponent {
   toggleCompleted() {
     this.isCompleted.update((completed) => !completed);
   }
+
+  isButtonDisabled(): boolean {
+    return this.isCompleted();
+  }
 }
