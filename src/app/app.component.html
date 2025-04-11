@@ -1,3 +1,8 @@
 <app-navbar></app-navbar>
+@if (isProd === false) {
+<div class="bg-neutral-800 text-center text-white">
+  This is not a Production environment
+</div>
+}
 
 <router-outlet></router-outlet>

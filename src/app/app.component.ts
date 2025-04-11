@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { environment } from '../environments/environment';
 import { NavbarComponent } from './core/components/navbar/navbar.component';
 
 @Component({
@@ -10,4 +11,6 @@ import { NavbarComponent } from './core/components/navbar/navbar.component';
 })
 export class AppComponent {
   title = 'angular-crud-app';
+
+  isProd = environment.isProd;
 }
