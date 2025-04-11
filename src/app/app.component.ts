@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TodoListComponent } from './todos/todo-list/todo-list.component';
 
@@ -11,6 +11,13 @@ import { TodoListComponent } from './todos/todo-list/todo-list.component';
 export class AppComponent {
   title = 'angular-crud-app';
   environment = Environment.Dev;
+
+  message = signal<string>('');
+
+  onKeyUp(event: KeyboardEvent) {
+    const input = event.target as HTMLInputElement;
+    this.message.set(input.value);
+  }
 }
 
 enum Environment {

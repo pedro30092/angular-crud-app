@@ -3,4 +3,8 @@
 }
 
 <app-todo-list></app-todo-list>
+
+<input type="text" (keyup)="onKeyUp($event)" placeholder="Add a new todo" />
+<p>{{ message() }} </p>
+
 <router-outlet />
