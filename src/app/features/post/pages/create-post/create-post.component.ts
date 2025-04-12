@@ -1,11 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
-import { getDownloadURL } from '@angular/fire/storage';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { getDownloadURL } from '@firebase/storage';
 import { MarkdownModule } from 'ngx-markdown';
 import { ImageService } from '../../../../shared/service/image.service';
 import { BlogPostService } from '../../services/blog-post.service';
@@ -36,7 +36,8 @@ export class CreatePostComponent {
       validators: [Validators.required, Validators.maxLength(3000)],
     }),
     coverImageUrl: new FormControl<string>('', {
-      nonNullable: false,
+      nonNullable: true,
+      validators: [Validators.required],
     }),
   });
 
@@ -53,11 +54,10 @@ export class CreatePostComponent {
       return;
     }
 
-    console.log('enter here');
-
     this.blogPostService.blogPost(
       this.createPostForm.getRawValue().title,
-      this.createPostForm.getRawValue().content
+      this.createPostForm.getRawValue().content,
+      this.createPostForm.getRawValue().coverImageUrl
     );
 
     alert('Post created successfully');
@@ -76,21 +76,22 @@ export class CreatePostComponent {
 
     const file: File = input.files[0];
 
-    console.log(file.name);
-
-    // this.imageService
-    //   .uploadImage(file.name, file)
-    //   .then((snapshot) => {
-    //     getDownloadURL(snapshot.ref)
-    //       .then((downloadURL) => {
-    //         console.log('Image uploaded successfully:', downloadURL);
-    //       })
-    //       .catch((error) => {
-    //         console.error('Error getting download url image:', error);
-    //       });
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error uploading image:', error);
-    //   });
+    this.imageService
+      .uploadImage(file.name, file)
+      .then((snapshot) => {
+        getDownloadURL(snapshot.ref)
+          .then((downloadURL) => {
+            this.createPostForm.patchValue({
+              coverImageUrl: downloadURL,
+            });
+            alert('Image uploaded successfully');
+          })
+          .catch((error) => {
+            console.error('Error getting download url image:', error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error uploading image:', error);
+      });
   }
 }

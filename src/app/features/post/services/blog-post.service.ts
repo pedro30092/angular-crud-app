@@ -8,7 +8,7 @@ import { BlogPostHelper } from '../../../core/helpers/blog-post-helper';
 export class BlogPostService {
   firestoreService = inject(Firestore);
 
-  blogPost(title: string, content: string): void {
+  blogPost(title: string, content: string, coverImageUrl: string): void {
     // Add a new document with a generated ID
     // const postCollectionReference = collection(this.firestore, 'blog-posts');
 
@@ -34,6 +34,7 @@ export class BlogPostService {
     setDoc(blogPostDocumentRef, {
       title,
       content,
+      coverImageUrl,
       publishedOn: new Date(),
     })
       .then(() => {
