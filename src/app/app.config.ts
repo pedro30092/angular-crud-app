@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideMarkdown } from 'ngx-markdown';
 import { environment } from '../environments/environment';
 import { routes } from './app.routes';
@@ -20,7 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     // provideDatabase(() => getDatabase()),
     // provideFunctions(() => getFunctions()),
-    // provideStorage(() => getStorage()),
+    provideStorage(() => getStorage()),
     provideMarkdown(),
   ],
 };

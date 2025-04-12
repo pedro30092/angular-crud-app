@@ -49,6 +49,21 @@
       }
     </div>
     <div class="mt-4">
+      <input
+        type="file"
+        class="hidden"
+        #coverImageInput
+        (change)="onCoverImageSelected(coverImageInput)"
+      />
+      <button
+        type="button"
+        class="border rounded px-4 py-2 bg-neutral-200"
+        (click)="coverImageInput.click()"
+      >
+        Add Cover Image
+      </button>
+    </div>
+    <div class="mt-4">
       <button
         type="submit"
         class="bg-indigo-800 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
