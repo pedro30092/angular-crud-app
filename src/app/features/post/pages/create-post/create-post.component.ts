@@ -1,20 +1,22 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MarkdownModule } from 'ngx-markdown';
 import { BlogPostService } from '../../services/blog-post.service';
 
 @Component({
   selector: 'app-create-post',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MarkdownModule],
   templateUrl: './create-post.component.html',
   styleUrl: './create-post.component.css',
 })
 export class CreatePostComponent {
+  contentData = signal<string>('');
   blogPostService = inject(BlogPostService);
 
   createPostForm = new FormGroup({
@@ -49,5 +51,9 @@ export class CreatePostComponent {
       this.createPostForm.getRawValue().title,
       this.createPostForm.getRawValue().content
     );
+  }
+
+  onContentChange() {
+    this.contentData.set(this.createPostForm.getRawValue().content);
   }
 }
