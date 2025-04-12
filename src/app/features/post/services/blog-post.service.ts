@@ -1,0 +1,46 @@
+import { inject, Injectable } from '@angular/core';
+import { doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { BlogPostHelper } from '../../../core/helpers/blog-post-helper';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class BlogPostService {
+  firestoreService = inject(Firestore);
+
+  blogPost(title: string, content: string): void {
+    // Add a new document with a generated ID
+    // const postCollectionReference = collection(this.firestore, 'blog-posts');
+
+    // addDoc(postCollectionReference, {
+    //   title: this.createPostForm.value.title,
+    //   content: this.createPostForm.value.content,
+    //   publishedOn: new Date(),
+    // })
+    //   .then(() => {
+    //     console.log('Post added to Firestore');
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error adding post to Firestore: ', error);
+    //   });
+
+    // Set a document with a generated ID
+    const blogPostDocumentRef = doc(
+      this.firestoreService,
+      'blog-posts',
+      BlogPostHelper.createSlug(title)
+    );
+
+    setDoc(blogPostDocumentRef, {
+      title,
+      content,
+      publishedOn: new Date(),
+    })
+      .then(() => {
+        console.log('Post set to Firestore');
+      })
+      .catch((error) => {
+        console.error('Error setting post to Firestore: ', error);
+      });
+  }
+}

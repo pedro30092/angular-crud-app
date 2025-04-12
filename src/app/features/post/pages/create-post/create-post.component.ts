@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { BlogPostService } from '../../services/blog-post.service';
 
 @Component({
   selector: 'app-create-post',
@@ -14,6 +15,8 @@ import {
   styleUrl: './create-post.component.css',
 })
 export class CreatePostComponent {
+  blogPostService = inject(BlogPostService);
+
   createPostForm = new FormGroup({
     title: new FormControl<string>('', {
       nonNullable: true,
@@ -38,6 +41,13 @@ export class CreatePostComponent {
   }
 
   onFormSubmit() {
-    console.warn(this.createPostForm.value);
+    if (this.createPostForm.invalid) {
+      return;
+    }
+
+    this.blogPostService.blogPost(
+      this.createPostForm.getRawValue().title,
+      this.createPostForm.getRawValue().content
+    );
   }
 }
