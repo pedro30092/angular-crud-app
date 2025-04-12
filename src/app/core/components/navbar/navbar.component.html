@@ -1,12 +1,12 @@
 <div class="max-w-7xl mx-auto">
-  <div class="p-4 flex">
+  <div class="p-4 flex justify-between">
     <a [routerLink]="['/']">
-      <img src="assets/images/favicon.ico" alt="Logos"/>
+      <img src="assets/images/favicon.ico" alt="Logos" />
     </a>
-    <div class="ms-auto flex items-center">
-      <a [routerLink]="['/create-post']" class="bg-indigo-500 text-white px-4 py-2 rounded">
-        Create Post
-      </a>
-    </div>
+    @if (userService.isAuthenticated) {
+      <app-logging-in></app-logging-in>
+    } @else {
+    <app-logging-out></app-logging-out>
+    }
   </div>
 </div>
