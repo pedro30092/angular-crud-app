@@ -50,17 +50,17 @@ export class LoginComponent {
     const formRawValues = this.loginForm.getRawValue();
     console.log(formRawValues);
 
-    // this.userService
-    //   .login(formRawValues.email, formRawValues.password)
-    //   .subscribe({
-    //     next: () => {
-    //       alert('User registered successfully');
-    //       this.errorMessage.set(undefined);
-    //     },
-    //     error: (error) => {
-    //       console.error('Error registering user:', error);
-    //       this.errorMessage.set(error.message);
-    //     },
-    //   });
+    this.userService
+      .login(formRawValues.email, formRawValues.password)
+      .subscribe({
+        next: () => {
+          alert('User registered successfully');
+          this.errorMessage.set(undefined);
+        },
+        error: (error) => {
+          console.error('Error login user:', error);
+          this.errorMessage.set(error.message);
+        },
+      });
   }
 }
