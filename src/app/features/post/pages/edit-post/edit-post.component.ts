@@ -66,6 +66,10 @@ export class EditPostComponent implements OnInit {
     this.blogPostService
       .getBlogPostBySlug(this.slug() ?? '')
       .subscribe((post) => {
+        //TODO Review why post is undefined, or why the ngOnInit is being called after navigation redirection
+        if (!post) {
+          return;
+        }
         this.editPostForm.patchValue({
           slug: post.slug,
           title: post.title,
@@ -121,5 +125,11 @@ export class EditPostComponent implements OnInit {
       .catch((error) => {
         console.error('Error uploading image:', error);
       });
+  }
+
+  onDeletePost(slug: string) {
+    this.blogPostService.deleteBlogPost(slug).subscribe(() => {
+      this.router.navigate(['/dashboard']);
+    });
   }
 }

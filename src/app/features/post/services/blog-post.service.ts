@@ -2,12 +2,13 @@ import { inject, Injectable } from '@angular/core';
 import {
   collection,
   collectionData,
+  deleteDoc,
   doc,
   docData,
   Firestore,
   setDoc,
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { BlogPostHelper } from '../../../core/helpers/blog-post-helper';
 import { BlogPost } from '../models/blog-post.model';
 
@@ -95,5 +96,17 @@ export class BlogPostService {
       publishedOn: new Date(),
       coverImageUrl,
     });
+  }
+
+  deleteBlogPost(slug: string): Observable<void> {
+    const blogPostCollectionRef = doc(
+      this.firestoreService,
+      'blog-posts',
+      slug
+    );
+
+    const deletePromise = deleteDoc(blogPostCollectionRef);
+
+    return from(deletePromise);
   }
 }
