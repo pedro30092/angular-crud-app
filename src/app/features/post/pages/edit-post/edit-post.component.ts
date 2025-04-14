@@ -1,28 +1,39 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { getDownloadURL } from '@firebase/storage';
 import { MarkdownModule } from 'ngx-markdown';
 import { ImageService } from '../../../../shared/service/image.service';
 import { BlogPostService } from '../../services/blog-post.service';
 
 @Component({
-  selector: 'app-create-post',
+  selector: 'app-edit-post',
   standalone: true,
   imports: [ReactiveFormsModule, MarkdownModule],
-  templateUrl: './create-post.component.html',
-  styleUrl: './create-post.component.css',
+  templateUrl: './edit-post.component.html',
+  styleUrl: './edit-post.component.css',
 })
-export class CreatePostComponent {
-  contentData = signal<string>('');
+export class EditPostComponent implements OnInit {
+  //DI
   blogPostService = inject(BlogPostService);
   imageService = inject(ImageService);
+  router = inject(Router);
 
-  createPostForm = new FormGroup({
+  //Signals
+  slug = input<string | undefined>(undefined);
+  contentData = signal<string>('');
+
+  //Initial validations (form validations set up)
+  editPostForm = new FormGroup({
+    slug: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
     title: new FormControl<string>('', {
       nonNullable: true,
       validators: [
@@ -41,32 +52,49 @@ export class CreatePostComponent {
     }),
   });
 
+  //Getters for form controls
   get title() {
-    return this.createPostForm.controls.title;
+    return this.editPostForm.controls.title;
   }
 
   get content() {
-    return this.createPostForm.controls.content;
+    return this.editPostForm.controls.content;
   }
 
+  //Lifecycle Hooks
+  ngOnInit(): void {
+    this.blogPostService
+      .getBlogPostBySlug(this.slug() ?? '')
+      .subscribe((post) => {
+        this.editPostForm.patchValue({
+          slug: post.slug,
+          title: post.title,
+          content: post.content,
+          coverImageUrl: post.coverImageUrl,
+        });
+
+        this.contentData.set(post.content);
+      });
+  }
+
+  //Component Event Handlers
   onFormSubmit() {
-    if (this.createPostForm.invalid) {
+    if (this.editPostForm.invalid) {
       return;
     }
 
-    this.blogPostService.createBlogPost(
-      this.createPostForm.getRawValue().title,
-      this.createPostForm.getRawValue().content,
-      this.createPostForm.getRawValue().coverImageUrl
+    this.blogPostService.updateBlogPost(
+      this.editPostForm.getRawValue().slug,
+      this.editPostForm.getRawValue().title,
+      this.editPostForm.getRawValue().content,
+      this.editPostForm.getRawValue().coverImageUrl
     );
 
-    alert('Post created successfully');
-
-    this.createPostForm.reset();
+    this.router.navigate(['/dashboard']);
   }
 
   onContentChange() {
-    this.contentData.set(this.createPostForm.getRawValue().content);
+    this.contentData.set(this.editPostForm.getRawValue().content);
   }
 
   onCoverImageSelected(input: HTMLInputElement) {
@@ -81,7 +109,7 @@ export class CreatePostComponent {
       .then((snapshot) => {
         getDownloadURL(snapshot.ref)
           .then((downloadURL) => {
-            this.createPostForm.patchValue({
+            this.editPostForm.patchValue({
               coverImageUrl: downloadURL,
             });
             alert('Image uploaded successfully');

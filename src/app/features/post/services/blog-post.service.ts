@@ -3,6 +3,7 @@ import {
   collection,
   collectionData,
   doc,
+  docData,
   Firestore,
   setDoc,
 } from '@angular/fire/firestore';
@@ -16,7 +17,7 @@ import { BlogPost } from '../models/blog-post.model';
 export class BlogPostService {
   firestoreService = inject(Firestore);
 
-  blogPost(title: string, content: string, coverImageUrl: string): void {
+  createBlogPost(title: string, content: string, coverImageUrl: string): void {
     // Add a new document with a generated ID
     // const postCollectionReference = collection(this.firestore, 'blog-posts');
 
@@ -53,7 +54,7 @@ export class BlogPostService {
       });
   }
 
-  getBlogPosts(): Observable<BlogPost[]> {
+  getAllBlogPosts(): Observable<BlogPost[]> {
     const blogPostCollectionRef = collection(
       this.firestoreService,
       'blog-posts'
@@ -62,5 +63,37 @@ export class BlogPostService {
     return collectionData(blogPostCollectionRef, {
       idField: 'slug',
     }) as Observable<BlogPost[]>;
+  }
+
+  getBlogPostBySlug(slug: string): Observable<BlogPost> {
+    const blogPostCollectionRef = doc(
+      this.firestoreService,
+      'blog-posts',
+      slug
+    );
+
+    return docData(blogPostCollectionRef, {
+      idField: 'slug',
+    }) as Observable<BlogPost>;
+  }
+
+  updateBlogPost(
+    slug: string,
+    title: string,
+    content: string,
+    coverImageUrl: string
+  ): void {
+    const blogPostCollectionRef = doc(
+      this.firestoreService,
+      'blog-posts',
+      slug
+    );
+
+    setDoc(blogPostCollectionRef, {
+      title,
+      content,
+      publishedOn: new Date(),
+      coverImageUrl,
+    });
   }
 }
