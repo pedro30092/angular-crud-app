@@ -1,6 +1,14 @@
 import { inject, Injectable } from '@angular/core';
-import { doc, Firestore, setDoc } from '@angular/fire/firestore';
+import {
+  collection,
+  collectionData,
+  doc,
+  Firestore,
+  setDoc,
+} from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 import { BlogPostHelper } from '../../../core/helpers/blog-post-helper';
+import { BlogPost } from '../models/blog-post.model';
 
 @Injectable({
   providedIn: 'root',
@@ -43,5 +51,16 @@ export class BlogPostService {
       .catch((error) => {
         console.error('Error setting post to Firestore: ', error);
       });
+  }
+
+  getBlogPosts(): Observable<BlogPost[]> {
+    const blogPostCollectionRef = collection(
+      this.firestoreService,
+      'blog-posts'
+    );
+
+    return collectionData(blogPostCollectionRef, {
+      idField: 'slug',
+    }) as Observable<BlogPost[]>;
   }
 }
