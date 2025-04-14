@@ -1,0 +1,60 @@
+<div class="max-w-7xl mx-auto px-4">
+  <h1 class="text-3xl mt-8 font-extrabold">Login</h1>
+  <form [formGroup]="loginForm" (ngSubmit)="onFormSubmit()">
+    <!-- Input for email -->
+    <div class="mt-4">
+      <label for="email" class="w-full">Email</label>
+      <input
+        type="text"
+        class="w-full bg-neutral-200 px-4 py-2 mt-2"
+        placeholder="Enter a valid email"
+        autocomplete="off"
+        formControlName="email"
+      />
+      @if (email.invalid && (email.dirty || email.touched)) {
+      <div class="text-red-500 mt-2">
+        @if (email.hasError('required')) {
+        <div>Email is required</div>
+        } @if (email.hasError('email')) {
+        <div>Is not a valid email</div>
+        }
+      </div>
+      }
+    </div>
+    <div class="mt-4">
+      <label for="password" class="w-full">Password</label>
+      <input
+        type="text"
+        class="w-full bg-neutral-200 px-4 py-2 mt-2"
+        autocomplete="off"
+        formControlName="password"
+      />
+      @if (password.invalid && (password.dirty || password.touched)) {
+      <div class="text-red-500 mt-2">
+        @if (password.hasError('required')) {
+        <div>Password is required</div>
+        } @if (password.hasError('minlength')) {
+        <div>Minimun 6 length</div>
+        } @if (password.hasError('maxlength')) {
+        <div>Maximun 20 length</div>
+        }
+      </div>
+      }
+    </div>
+    @if (errorMessage()) {
+    <div class="text-red-500 mt-2">
+      <div>{{ errorMessage() }}</div>
+    </div>
+    }
+
+    <div class="mt-4">
+      <button
+        type="submit"
+        class="bg-indigo-800 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+        [disabled]="loginForm.valid === false"
+      >
+        Log in
+      </button>
+    </div>
+  </form>
+</div>

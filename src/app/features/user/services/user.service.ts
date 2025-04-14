@@ -20,4 +20,14 @@ export class UserService {
 
     return from(registerPromise);
   }
+
+  login(email: string, password: string): Observable<void> {
+    const registerPromise = createUserWithEmailAndPassword(
+      this.firebaseAuthService,
+      email,
+      password
+    ).then(() => {});
+
+    return from(registerPromise);
+  }
 }
