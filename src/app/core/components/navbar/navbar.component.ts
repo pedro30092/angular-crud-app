@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../../features/user/services/user.service';
 import { LoggingInComponent } from './logging-in/logging-in.component';
 import { LoggingOutComponent } from './logging-out/logging-out.component';
 
