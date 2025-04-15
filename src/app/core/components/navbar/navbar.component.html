@@ -3,10 +3,10 @@
     <a [routerLink]="['/']">
       <img src="assets/images/favicon.ico" alt="Logos" />
     </a>
-    @if (userService.isAuthenticated) {
-      <app-logging-in></app-logging-in>
-    } @else {
+    @if (userService.currentUser() === undefined) {
     <app-logging-out></app-logging-out>
+    } @else {
+    <app-logging-in [currentUser]="userService.currentUser()!"></app-logging-in>
     }
   </div>
 </div>

@@ -1,8 +1,9 @@
-import { inject, Injectable } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
+import { inject, Injectable, signal } from '@angular/core';
+import { Auth, user } from '@angular/fire/auth';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from '@firebase/auth';
 import { from, Observable } from 'rxjs';
 import { User } from '../models/user.model';
@@ -11,9 +12,9 @@ import { User } from '../models/user.model';
   providedIn: 'root',
 })
 export class UserService {
-  isAuthenticated = false;
-
+  currentUser = signal<User | undefined>(undefined);
   firebaseAuthService = inject(Auth);
+  user$ = user(this.firebaseAuthService);
 
   register(email: string, password: string): Observable<void> {
     const registerPromise = createUserWithEmailAndPassword(
@@ -38,5 +39,11 @@ export class UserService {
     });
 
     return from(loginPromise);
+  }
+
+  logout(): Observable<void> {
+    const logoutPromise = signOut(this.firebaseAuthService);
+
+    return from(logoutPromise);
   }
 }

@@ -30,6 +30,13 @@
       class="min-w-[200px] absolute right-0 top-18 bg-neutral-50 border rounded"
       [class]="navbarService.hideUserMenu() ? 'hidden' : ''"
     >
+      <li class="bg-neutral-100 text-indigo-500 px-4 py-2">
+        <a class="flex">
+          <span class="ms-2">
+            {{ currentUser().email }}
+          </span>
+        </a>
+      </li>
       <li class="px-4 py-2 hover:bg-neutral-200">
         <a
           href="#"
@@ -57,7 +64,7 @@
         </a>
       </li>
       <li class="px-4 py-2 hover:bg-neutral-200">
-        <a href="#" class="flex">
+        <a [routerLink]="['/logout']" class="flex">
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"

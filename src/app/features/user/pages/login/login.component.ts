@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ import { UserService } from '../../services/user.service';
 })
 export class LoginComponent {
   userService = inject(UserService);
+  router = inject(Router);
 
   errorMessage = signal<string | undefined>(undefined);
 
@@ -56,6 +58,8 @@ export class LoginComponent {
         next: () => {
           alert('User registered successfully');
           this.errorMessage.set(undefined);
+
+          this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           console.error('Error login user:', error);
