@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,7 @@ import { UserService } from '../../services/user.service';
 })
 export class RegisterComponent {
   userService = inject(UserService);
+  router = inject(Router);
 
   errorMessage = signal<string | undefined>(undefined);
 
@@ -53,8 +55,9 @@ export class RegisterComponent {
       .register(formRawValues.email, formRawValues.password)
       .subscribe({
         next: () => {
-          alert('User registered successfully');
           this.errorMessage.set(undefined);
+
+          this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           console.error('Error registering user:', error);

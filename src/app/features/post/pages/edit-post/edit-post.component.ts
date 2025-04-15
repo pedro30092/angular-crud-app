@@ -116,7 +116,6 @@ export class EditPostComponent implements OnInit {
             this.editPostForm.patchValue({
               coverImageUrl: downloadURL,
             });
-            alert('Image uploaded successfully');
           })
           .catch((error) => {
             console.error('Error getting download url image:', error);

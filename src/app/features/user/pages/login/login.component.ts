@@ -56,7 +56,6 @@ export class LoginComponent {
       .login(formRawValues.email, formRawValues.password)
       .subscribe({
         next: () => {
-          alert('User registered successfully');
           this.errorMessage.set(undefined);
 
           this.router.navigate(['/dashboard']);
