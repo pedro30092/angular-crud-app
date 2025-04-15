@@ -5,6 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { getDownloadURL } from '@firebase/storage';
 import { MarkdownModule } from 'ngx-markdown';
 import { ImageService } from '../../../../shared/service/image.service';
@@ -21,6 +22,7 @@ export class CreatePostComponent {
   contentData = signal<string>('');
   blogPostService = inject(BlogPostService);
   imageService = inject(ImageService);
+  router = inject(Router);
 
   createPostForm = new FormGroup({
     title: new FormControl<string>('', {
@@ -60,9 +62,9 @@ export class CreatePostComponent {
       this.createPostForm.getRawValue().coverImageUrl
     );
 
-    alert('Post created successfully');
-
     this.createPostForm.reset();
+
+    this.router.navigate(['/dashboard']);
   }
 
   onContentChange() {
@@ -84,7 +86,6 @@ export class CreatePostComponent {
             this.createPostForm.patchValue({
               coverImageUrl: downloadURL,
             });
-            alert('Image uploaded successfully');
           })
           .catch((error) => {
             console.error('Error getting download url image:', error);

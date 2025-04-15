@@ -10,6 +10,7 @@ import {
 } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 import { BlogPostHelper } from '../../../core/helpers/blog-post-helper';
+import { UserService } from '../../user/services/user.service';
 import { BlogPost } from '../models/blog-post.model';
 
 @Injectable({
@@ -17,6 +18,7 @@ import { BlogPost } from '../models/blog-post.model';
 })
 export class BlogPostService {
   firestoreService = inject(Firestore);
+  userService = inject(UserService);
 
   createBlogPost(title: string, content: string, coverImageUrl: string): void {
     // Add a new document with a generated ID
@@ -46,6 +48,7 @@ export class BlogPostService {
       content,
       coverImageUrl,
       publishedOn: new Date(),
+      userId: this.userService.currentUser()?.id,
     })
       .then(() => {
         console.log('Post set to Firestore');
@@ -95,6 +98,7 @@ export class BlogPostService {
       content,
       publishedOn: new Date(),
       coverImageUrl,
+      userId: this.userService.currentUser()?.id,
     });
   }
 
