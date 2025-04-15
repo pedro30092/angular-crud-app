@@ -1,0 +1,30 @@
+<div class="bg-indigo-50 py-56">
+  <h1 class="text-center font-extrabold text-6xl mb-4">
+    DEV
+    <span class="text-indigo-600">HOME</span>
+  </h1>
+</div>
+
+<div
+  class="max-w-7xl mx-auto px-4 grid gap-10 grid-cols-1 md:grid-cols-3 mt-10"
+>
+  @for (blogPost of blogPosts(); track blogPost.slug) {
+  <div class="border">
+    <img src="rounded-sm" [src]="blogPost.coverImageUrl" alt="" />
+    <div class="p-4">
+      <h2 class="text-2xl font-semibold">{{ blogPost.title }}</h2>
+      <p>
+        <span
+          >Published on:
+          {{
+            convertTimestampToDate(blogPost.publishedOn) | date : "MM-dd-yyyy"
+          }}</span
+        >
+      </p>
+      <a href="#" class="bg-indigo-100 px-4 py-2 rounded mt-5 inline-block">
+        Read more
+      </a>
+    </div>
+  </div>
+  }
+</div>

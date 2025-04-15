@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Timestamp } from '@angular/fire/firestore';
 import { RouterLink } from '@angular/router';
+import { BlogPostHelper } from '../../../../core/helpers/blog-post-helper';
 import { BlogPostService } from '../../../post/services/blog-post.service';
 import { DashboardStatisticsComponent } from '../../components/dashboard-statistics/dashboard-statistics.component';
 
@@ -18,8 +18,5 @@ export class DashboardComponent {
   blogPosts = toSignal(this.blogPostService.getAllBlogPostsByUser());
   totalBlogPosts = computed(() => this.blogPosts()?.length);
 
-  convertTimestampToDate(timestamp?: Timestamp): Date | string {
-
-    return timestamp ? timestamp.toDate() : 'N/A';
-  }
+  convertTimestampToDate = BlogPostHelper.convertTimestampToDate;
 }
