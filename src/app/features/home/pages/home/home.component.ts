@@ -1,16 +1,16 @@
-
-import { Component, computed, inject } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { BlogPostHelper } from '../../../../core/helpers/blog-post-helper';
 import { BlogPostService } from '../../../post/services/blog-post.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe, RouterLink],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
 export class HomeComponent {
   blogPostService = inject(BlogPostService);

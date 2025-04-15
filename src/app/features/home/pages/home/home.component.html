@@ -21,7 +21,10 @@
           }}</span
         >
       </p>
-      <a href="#" class="bg-indigo-100 px-4 py-2 rounded mt-5 inline-block">
+      <a
+        [routerLink]="['/blog', blogPost.slug]"
+        class="bg-indigo-100 px-4 py-2 rounded mt-5 inline-block"
+      >
         Read more
       </a>
     </div>
