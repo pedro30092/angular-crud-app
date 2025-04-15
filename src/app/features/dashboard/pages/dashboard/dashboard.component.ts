@@ -15,7 +15,7 @@ import { DashboardStatisticsComponent } from '../../components/dashboard-statist
 export class DashboardComponent {
   blogPostService = inject(BlogPostService);
 
-  blogPosts = toSignal(this.blogPostService.getAllBlogPosts());
+  blogPosts = toSignal(this.blogPostService.getAllBlogPostsByUser());
   totalBlogPosts = computed(() => this.blogPosts()?.length);
 
   convertTimestampToDate(timestamp?: Timestamp): Date | string {

@@ -6,7 +6,9 @@ import {
   doc,
   docData,
   Firestore,
+  query,
   setDoc,
+  where,
 } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 import { BlogPostHelper } from '../../../core/helpers/blog-post-helper';
@@ -65,6 +67,24 @@ export class BlogPostService {
     );
 
     return collectionData(blogPostCollectionRef, {
+      idField: 'slug',
+    }) as Observable<BlogPost[]>;
+  }
+
+  getAllBlogPostsByUser(): Observable<BlogPost[]> {
+    console.log(this.userService.currentUser()?.id);
+
+    const blogPostCollectionRef = collection(
+      this.firestoreService,
+      'blog-posts'
+    );
+
+    const queryFilter = query(
+      blogPostCollectionRef,
+      where('userId', '==', this.userService.currentUser()?.id)
+    );
+
+    return collectionData(queryFilter, {
       idField: 'slug',
     }) as Observable<BlogPost[]>;
   }

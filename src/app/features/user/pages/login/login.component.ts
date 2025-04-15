@@ -5,8 +5,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { NavbarService } from '../../../../core/services/navbar.service';
+import { User } from '../../models/user.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +19,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   userService = inject(UserService);
+  navbarService = inject(NavbarService);
   router = inject(Router);
 
   errorMessage = signal<string | undefined>(undefined);
@@ -50,13 +53,14 @@ export class LoginComponent {
     }
 
     const formRawValues = this.loginForm.getRawValue();
-    console.log(formRawValues);
 
     this.userService
       .login(formRawValues.email, formRawValues.password)
       .subscribe({
-        next: () => {
+        next: (user: User) => {
           this.errorMessage.set(undefined);
+          this.userService.currentUser.set(user);
+          this.navbarService.forceHide()
 
           this.router.navigate(['/dashboard']);
         },

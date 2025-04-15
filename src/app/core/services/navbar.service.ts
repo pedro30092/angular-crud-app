@@ -9,4 +9,8 @@ export class NavbarService {
   toggleUserMenu() {
     this.hideUserMenu.set(!this.hideUserMenu());
   }
+
+  forceHide() {
+    this.hideUserMenu.set(true);
+  }
 }
